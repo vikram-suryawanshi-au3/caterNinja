@@ -3,7 +3,8 @@ import './bookChef.css'
 import { Modal, Button } from "react-bootstrap";
 import  MultiSelectReact  from 'multi-select-react';
 // import { Col, Form } from "react-bootstrap";
-import data from './data.json'
+import data from './data.json';
+import newdata from './newdata.json'
 // import 'bootstrap'
 
 // import * as $ from 'jquery';
@@ -20,12 +21,15 @@ export default class BookChef extends Component {
             isOpen2: false,
             isOpen3: false,
             isOpen4: false,
-            appetizer:data.data,
-            boolean:false,
-            data:[data.data],
-            mainCourse:data.data,
+            appetizer:[],
+            boolean:true,
+            data:[newdata.Sheet1],
+            mainCourse:[],
             date:'',
-            dessert:[]
+            dessert:[],
+            totalMainCoursePrice:0,
+            totalAppeticerPrice:0,
+            totalDessertPrice:0
           }
 
     //       optionClicked(optionsList) {
@@ -62,7 +66,7 @@ componentDidMount(){
         //     searchResultLimit:5,
         //     renderChoiceLimit:5
         //     });
-        console.log(this.state.appetizer)
+        console.log(this.state.data)
         var d = new Date(),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -74,32 +78,62 @@ componentDidMount(){
         day = '0' + day;
 
     this.setState({
-        todaysDate : [year, month, day].join('-')
+        todaysDate : [year, month, day].join('-'),
+        data : this.state.data[0].filter(element => {
+            if(element.label.includes("price")){
+                return element.label
+            }else if(element.quantity === "kg"){
+
+                return element.label = `${element.label + "     price : " + element.price + " / " + element.quantity}`
+            }
+            return element.label = `${element.label + "     price : " + element.price + " / dozon"}`
+        })
     })
+
+    
     }
 
     
     openModal = () => this.setState({ isOpen1: true });
-    closeModal = () => this.setState({ 
-            isOpen1: false,
+    closeModal = () => {
+        window.location.reload();
+        this.setState({ 
+        isOpen1: false,
             isOpen2: false,
-            isOpen3:false,
-            isOpen4:false,
+            isOpen3: false,
+            isOpen4: false,
+            appetizer:[],
+            boolean:true,
+            data:[newdata.Sheet1],
+            mainCourse:[],
+            date:'',
+            dessert:[],
+            totalMainCoursePrice:0,
+            totalAppeticerPrice:0,
+            totalDessertPrice:0,
+            // isOpen1: false,
+            // isOpen2: false,
+            // isOpen3:false,
+            // isOpen4:false,
             occasion:'',
             people:0,
             meal:'',
             cuisine:'',
             preference:'',
             mealtype:'',
-            appetizer:data.data,
-            boolean:false,
-            data:[data.data],
-            mainCourse:data.data,
-            date:'',
-            dessert:data.data
+            // appetizer:[],
+            // boolean:false,
+            // data:[newdata.Sheet1],
+            // mainCourse:[],
+            // date:'',
+            // dessert:[],
+            city:''
         });
+    }
     nextonetotwo = () => {
-        if(!this.state.occasion){
+        if(!this.state.city){
+            alert("please select city")
+        }else if(!this.state.occasion){
             alert("please select occasion")
         }else if(!this.state.people){
             alert("please select people")
@@ -108,95 +142,20 @@ componentDidMount(){
         }else if(!this.state.meal){
             alert("please select meal")
         }else{
-            if(this.state.meal === "Lunch and dinner"){
+            // if(this.state.meal === "Lunch and dinner"){
                 this.setState({ 
                                 isOpen1: false,
                                 isOpen2: true,
-                                // isOpen3: false,
-                                // isOpen4: false,
-                                // appetizer:this.state.appetizer.filter((item)=>{
-                                //     return item.meal === "Lunch only" || item.meal === "Dinner only"
-                                // }),
-                                // mainCourse:this.state.mainCourse.filter((item)=>{
-                                //     return item.meal === "Lunch only" || item.meal === "Dinner only"
-                                // })
                             })
-            }else{
-                this.setState({ 
-                    isOpen1: false,
-                    isOpen2: true,
-                    // isOpen3: false,
-                    // isOpen4: false,
-                    // appetizer:this.state.appetizer.filter((item)=>{
-                    //     return item.meal === this.state.meal
-                    // }),
-                    // mainCourse:this.state.mainCourse.filter((item)=>{
-                    //     return item.meal === this.state.meal
-                    // })
-                })
-            }
+            // }else{
+                // this.setState({ 
+                //     isOpen1: false,
+                //     isOpen2: true,
+                // })
+            // }
         }
                         };
-    nexttwotothree = () => {
-
-        // if(this.state.meal === "Lunch and dinner"){
-        //     this.setState({ 
-        //         isOpen2: false,
-        //         isOpen3: true,
-        //                     // isOpen3: false,
-        //                     // isOpen4: false,
-        //                     appetizer:this.state.appetizer.filter((item)=>{
-        //                         return item.meal === "Lunch only" || item.meal === "Dinner only"
-        //                     }),
-        //                     mainCourse:this.state.mainCourse.filter((item)=>{
-        //                         return item.meal === "Lunch only" || item.meal === "Dinner only"
-        //                     })
-        //                 })
-        // }else{
-        //     this.setState({ 
-        //         isOpen2: false,
-        //         isOpen3: true,
-        //         // isOpen3: false,
-        //         // isOpen4: false,
-        //         appetizer:this.state.appetizer.filter((item)=>{
-        //             return item.meal === this.state.meal
-        //         }),
-        //         mainCourse:this.state.mainCourse.filter((item)=>{
-        //             return item.meal === this.state.meal
-        //         })
-        //     })
-        // }
-                            
-        //                     if(this.state.preference==="veg & Nonveg"){
-        //                         this.setState({
-        //                             // isOpen1: false,
-        //                             isOpen2: false,
-        //                             isOpen3: true,
-        //                             // isOpen4: false,
-        //                             appetizer:this.state.appetizer.filter((item)=>{
-        //                                 return item.occasion === this.state.cuisine && item.mealtype === "Appetizer only"
-        //                             }),
-        //                             mainCourse:this.state.mainCourse.filter((item)=>{
-        //                                 return item.occasion === this.state.cuisine && item.mealtype === "Main course"
-        //                             })
-        //                         })
-        //                     }else{
-        //                         this.setState({ 
-        //                             // isOpen1: false,
-        //                             isOpen2: false,
-        //                             isOpen3: true,
-        //                             // isOpen4: false,
-        //                             appetizer:this.state.appetizer.filter((item)=>{
-        //                                 return item.occasion === this.state.cuisine && item.preference === this.state.preference && item.mealtype === "Appetizer only"
-        //                             }),
-        //                             mainCourse:this.state.mainCourse.filter((item)=>{
-        //                                 return item.occasion === this.state.cuisine && item.preference === this.state.preference && item.mealtype === "Main course"
-        //                             })
-        //                         })
-        //                     }
-
-                            
-                            
+    nexttwotothree = () => {                 
 
                             // start
                            if(!this.state.cuisine){
@@ -206,113 +165,458 @@ componentDidMount(){
                            }else if(!this.state.mealtype){
                                 alert("please select Meal Type")
                            }else{
-                                if(this.state.meal === "Lunch and dinner" && this.state.preference==="veg & Nonveg"){
-                                this.setState({ 
-                                    isOpen2: false,
-                                    isOpen3: true,
-                                    // isOpen3: false,
-                                    // isOpen4: false,
-                                    appetizer:this.state.appetizer.filter((item)=>{
-                                        return (item.meal === "Lunch only" || item.meal === "Dinner only") && (item.occasion === this.state.cuisine && item.mealtype === "Appetizer only")
-                                    }),
-                                    mainCourse:this.state.mainCourse.filter((item)=>{
-                                        return (item.meal === "Lunch only" || item.meal === "Dinner only") && (item.occasion === this.state.cuisine && item.mealtype === "Main course")
-                                    }),
-                                    dessert:data.data.filter((item)=>{
-                                        return (item.mealtype === "Dessert")
-                                    })
 
-                                })
-                            }else if (this.state.meal === "Lunch and dinner" && this.state.preference !== "veg & Nonveg"){
-                                this.setState({ 
-                                    isOpen2: false,
-                                    isOpen3: true,
-                                    // isOpen3: false,
-                                    // isOpen4: false,
-                                    appetizer:this.state.appetizer.filter((item)=>{
-                                        return (item.meal === "Lunch only" || item.meal === "Dinner only") && (item.occasion === this.state.cuisine && item.preference === this.state.preference && item.mealtype === "Appetizer only")
-                                    }),
-                                    mainCourse:this.state.mainCourse.filter((item)=>{
-                                        return (item.meal === "Lunch only" || item.meal === "Dinner only") && (item.occasion === this.state.cuisine && item.preference === this.state.preference && item.mealtype === "Main course")
-                                    }),
-                                    dessert:data.data.filter((item)=>{
-                                        return (item.mealtype === "Dessert")
-                                    })
-                                })
-                            }else if (this.state.meal !== "Lunch and dinner" && this.state.preference === "veg & Nonveg"){
-                                this.setState({ 
-                                    isOpen2: false,
-                                    isOpen3: true,
-                                    // isOpen3: false,
-                                    // isOpen4: false,
-                                    appetizer:this.state.appetizer.filter((item)=>{
-                                        return item.meal === this.state.meal && (item.occasion === this.state.cuisine && item.mealtype === "Appetizer only")
-                                    }),
-                                    mainCourse:this.state.mainCourse.filter((item)=>{
-                                        return item.meal === this.state.meal && (item.occasion === this.state.cuisine && item.mealtype === "Main course")
-                                    }),
-                                    dessert:data.data.filter((item)=>{
-                                        return (item.mealtype === "Dessert")
-                                    })
-                                })
+                            this.setState({
+                                isOpen2: false,
+                                isOpen3: true,
+                            })
+
+                            
+
+                            // if(this.state.cuisine === "Indian & Chinese")
+
+                            if(this.state.mealtype === "Starter"){
+                                if(this.state.preference === "veg"){
+                                    if(this.state.cuisine === "Indian & Chinese"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Chinese") && element.mealtype === "Starter" && element.preference === "veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Continental") && element.mealtype === "Starter" && element.preference === "veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }else{
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return element.cuisine === this.state.cuisine && element.mealtype === "Starter" && element.preference === "veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }
+                                    console.log("1if 1if")
+                                    console.log(this.state)
+                                }else if(this.state.preference === "non_veg"){
+                                    if(this.state.cuisine === "Indian & Chinese"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Chinese") && element.mealtype === "Starter" && element.preference === "non_veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Continental") && element.mealtype === "Starter" && element.preference === "non_veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }else{
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return element.cuisine === this.state.cuisine && element.mealtype === "Starter" && element.preference === "non_veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }
+                                    console.log("1if 2if")
+                                    console.log(this.state)
+                                }else{
+                                    if(this.state.cuisine === "Indian & Chinese"){
+
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Chinese") && element.mealtype === "Starter"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Continental") && element.mealtype === "Starter"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }else{
+
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return element.cuisine === this.state.cuisine && element.mealtype === "Starter"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:[]
+                                        })
+                                    }
+                                    console.log("1if 3if")
+                                    console.log(this.state)
+                                }
+                            }else if(this.state.mealtype === "Main course"){
+                                if(this.state.preference === "veg"){
+                                    if(this.state.cuisine === "Indian & Chinese"){
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }else{
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }
+                                    console.log("2if 1if")
+                                    console.log(this.state)
+                                }else if(this.state.preference === "non_veg"){
+                                    if(this.state.cuisine === "Indian & Chinese"){
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }else{
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }
+                                    console.log("2if 2if")
+                                    console.log(this.state)
+                                }else{
+                                    if(this.state.cuisine === "Indian & Chinese"){
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }else{
+                                        this.setState({
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            appetizer:[]
+                                        })
+                                    }
+                                    // this.setState({
+                                    //     mainCourse:this.state.data.filter(element => {
+                                    //         return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                    //     }),
+                                    //     dessert:this.state.data.filter(element => {
+                                    //         return element.mealsubtype === "Dessert"
+                                    //     }),
+                                    //     appetizer:[]
+                                    // })
+                                    console.log("2if 3if")
+                                    console.log(this.state)
+                                }
+
                             }else{
-                                this.setState({ 
-                                    isOpen2: false,
-                                    isOpen3: true,
-                                    // isOpen3: false,
-                                    // isOpen4: false,
-                                    appetizer:this.state.appetizer.filter((item)=>{
-                                        return item.meal === this.state.meal && (item.occasion === this.state.cuisine && item.preference === this.state.preference && item.mealtype === "Appetizer only")
-                                    }),
-                                    mainCourse:this.state.mainCourse.filter((item)=>{
-                                        return item.meal === this.state.meal && (item.occasion === this.state.cuisine && item.preference === this.state.preference && item.mealtype === "Main course")
-                                    }),
-                                    dessert:data.data.filter((item)=>{
-                                        return (item.mealtype === "Dessert")
-                                    })
-                                })
+                                if(this.state.preference === "veg"){
+                                    if(this.state.cuisine === "Indian & Chinese"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Chinese") && element.mealtype === "Starter" && element.preference === "veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Continental") && element.mealtype === "Starter" && element.preference === "veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }else{
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return element.cuisine === this.state.cuisine && element.mealtype === "Starter" && element.preference === "veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }
+                                    console.log("3if 1if")
+                                    console.log(this.state)
+                                }else if(this.state.preference === "non_veg"){
+                                    if(this.state.cuisine === "Indian & Chinese"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Chinese") && element.mealtype === "Starter" && element.preference === "non_veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Continental") && element.mealtype === "Starter" && element.preference === "non_veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }else{
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return element.cuisine === this.state.cuisine && element.mealtype === "Starter" && element.preference === "non_veg"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }
+                                    console.log("3if 2if")
+                                    console.log(this.state)
+                                }else{
+                                    if(this.state.cuisine === "Indian & Chinese"){
+
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Chinese") && element.mealtype === "Starter"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }else if(this.state.cuisine === "Indian & Continental"){
+
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Continental") && element.mealtype === "Starter"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }else{
+
+                                        this.setState({
+                                            appetizer:this.state.data.filter(element => {
+                                                return element.cuisine === this.state.cuisine && element.mealtype === "Starter"
+                                            }),
+                                            dessert:this.state.data.filter(element => {
+                                                return element.mealsubtype === "Dessert"
+                                            }),
+                                            mainCourse:this.state.data.filter(element => {
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                            })
+                                        })
+                                    }
+                                    console.log("3if 3if")
+                                    console.log(this.state)
+                                }
                             }
                         }
 
                             // end
-
-                            console.log("data")
-                            console.log(this.state.cuisine)
-                            console.log(this.state.preference)
-                            console.log(this.state.mealtype)
-                            console.log(this.state.appetizer)
-                            console.log(this.state.mainCourse)
-
                         }
+
+    calculate(){
+
+        let peoples = this.state.people
+
+        const mainCoursePriceArr = this.state.mainCourse.filter(item=>{
+            return item.value === true
+        })
+
+        const appetizerPriceArr = this.state.appetizer.filter(item=>{
+            return item.value === true
+        })
+
+        const dessertPriceArr = this.state.dessert.filter(item=>{
+            return item.value === true
+        })
+
+        console.log("app")
+        console.log(appetizerPriceArr)
+        console.log("main")
+        console.log(mainCoursePriceArr)
+        console.log("dess")
+        console.log(dessertPriceArr)
+
+        let mainCoursePrice = mainCoursePriceArr.reduce((acc, item) => {
+            if(item.quantity === "kg") {
+                    if(mainCoursePriceArr.length === 1){
+                        return acc + (item.price * peoples * 0.150)
+                    }
+                    return acc + (item.price * peoples * 0.100)
+            }
+                if(item.name === "Pooris"){
+                    return acc + ((item.price)/12 * peoples * 3 )
+                }
+                return acc + ((item.price)/12 * peoples * 2)
+        }, 0)
+
+        let appetizerPrice = appetizerPriceArr.reduce((accu, itema) => {
+            if(itema.quantity === "kg") {
+                    // if(mainCoursePriceArr.length === 1){
+                    //     return accu + (itema.price * peoples * 0.150)
+                    // }
+                    return accu + (itema.price * peoples * 0.100)
+            }
+                // if(itema.name === "Pooris"){
+                //     return accu + ((itema.price)/12 * peoples * 3 )
+                // }
+                return accu + ((itema.price)/12 * peoples * 2)
+        }, 0)
+
+        let dessertPricee = dessertPriceArr.reduce((accum, itemd) => {
+            if(itemd.quantity === "kg") {
+                    return accum + ((itemd.price * peoples) * 0.075)
+            }
+                return accum + ((itemd.price)/12 * peoples * 2)
+        }, 0)
+
+        console.log(this.state)
+
+        this.setState({
+            totalMainCoursePrice : Math.round(mainCoursePrice),
+            totalAppeticerPrice : Math.round(appetizerPrice),
+            totalDessertPrice : Math.round(dessertPricee)
+        }) 
+
+
+    }
+
     nextthreetofour = () => {
-                            this.setState({ 
-                                // isOpen1: false,
-                                // isOpen2: false,
+                            this.setState({
                                 isOpen3: false,
                                 isOpen4: true,
+                                boolean:true,
                             });
-                            // if(this.state.boolean){
-                            //     this.setState({
-                            //         multiSelect:[]
-                            //     })
-                            // }
+                            this.calculate()
                         }
     prevtwotoone = () => this.setState({ 
                                 isOpen1: true,
                                 isOpen2: false,
-                                // isOpen3: false,
-                                // isOpen4: false,
-                                
-                                appetizer:data.data,
-                                mainCourse:data.data
+                                appetizer:[],
+                                mainCourse:[]
                             });
     prevthreetotwo = () => this.setState({ 
-                                // isOpen1: false,
                                 isOpen2: true,
                                 isOpen3: false,
-                                // isOpen4: false,
-                                appetizer:data.data,
-                                mainCourse:data.data
+                                appetizer:[],
+                                mainCourse:[]
+                            });
+                            prevfourtothree = () => this.setState({ 
+                                isOpen3: true,
+                                isOpen4: false,
                             });
     occasion = (e) => this.setState({
         occasion:e.target.value
@@ -332,19 +636,19 @@ componentDidMount(){
     }
     optionClicked2(optionsList) {
         this.setState({ mainCourse: optionsList });
-        console.log(optionsList)
+        // console.log(optionsList)
     }
     selectedBadgeClicked2(optionsList) {
         this.setState({ mainCourse: optionsList });
-        console.log(optionsList)
+        // console.log(optionsList)
     }
     optionClicked3(optionsList) {
         this.setState({ dessert: optionsList });
-        console.log(optionsList)
+        // console.log(optionsList)
     }
     selectedBadgeClicked3(optionsList) {
         this.setState({ dessert: optionsList });
-        console.log(optionsList)
+        // console.log(optionsList)
     }
 
     convertDate(date){
@@ -363,17 +667,33 @@ componentDidMount(){
             color: "#3c763d",
             appetizerPrice:''
         };
-        const appetizerPrice = this.state.appetizer.filter(item=>{
-            return item.value === true
-        }).reduce((totalCalories, meal) => totalCalories +  meal.price, 0);
+        // const appetizerPrice = this.state.appetizer.filter(item=>{
+        //     return item.value === true
+        // }).reduce((totalCalories, meal) => totalCalories +  meal.price, 0);
 
-        const mainCoursePrice = this.state.mainCourse.filter(item=>{
-            return item.value === true
-        }).reduce((totalCalories, meal) => totalCalories +  meal.price, 0);
+        // const mainCoursePriceArr = this.state.mainCourse.filter(item=>{
+        //     return item.value === true
+        // })
+        
+        // const mainCoursePriceA = mainCoursePriceArr.reduce((totalPrice, element) => {
+        //     if(element.quantity === "kg") {
+        //         if(mainCoursePriceArr.length === 1){
+        //             return totalPrice + (element.price * this.state.people * 0.150)
+        //         }else{
+        //             return totalPrice + (element.price * this.state.people * 0.100)
+        //         }
+        //     }else if(element.quantity === "pcs"){
+        //         if(element.mealsubtype === "Pooris"){
+        //             return totalPrice + (element.price * this.state.people * 3)
+        //         }else{
+        //             return totalPrice + (element.price * this.state.people * 2)
+        //         }
+        //     }
+        // }, 0);
 
-        const dessertPrice = this.state.dessert.filter(item=>{
-            return item.value === true
-        }).reduce((totalCalories, meal) => totalCalories +  meal.price, 0);
+        // const dessertPrice = this.state.dessert.filter(item=>{
+        //     return item.value === true
+        // }).reduce((totalCalories, meal) => totalCalories +  meal.price, 0);
 
         return (
                 <div>
@@ -393,6 +713,22 @@ componentDidMount(){
                         </Modal.Header>
 
                         <Modal.Body>
+
+                        <div>Select City</div>
+                            <input type="radio" className="btn-check" name="city" id="city_mumbai" value="Mumbai" 
+                            autoComplete="off" defaultChecked={this.state.city === "Mumbai"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="city_mumbai">Mumbai</label>
+
+                            <input type="radio" className="btn-check" name="city" id="city_bangalore" value="Bangalore" 
+                            autoComplete="off" defaultChecked={this.state.city === "Bangalore"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="city_bangalore">Bangalore</label>
+
+                            {/* <input type="radio" className="btn-check" name="city" id="Lunch&Dinner" value="Lunch and dinner" 
+                            autoComplete="off" defaultChecked={this.state.meal === "Lunch and dinner"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="Lunch&Dinner">Lunch and Dinner</label> */}
+
+                            <br/>
+                            <hr/>
 
                             <div>Select Occasion</div>
                             <input type="radio" className="btn-check" name="options-outlined" id="BirthdayParty" value="Birthday party" 
@@ -496,54 +832,54 @@ componentDidMount(){
                             autoComplete="off" defaultChecked={this.state.cuisine === "Indian & Chinese"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="Indian&Chinese">Indian & Chinese</label>
 
-                            <input type="radio" className="btn-check" name="cuisine" id="Indian&Itallian" value="Indian & Itallian" 
-                            autoComplete="off" defaultChecked={this.state.cuisine === "Indian & Itallian"} onChange={(e)=>{this.change(e)}}/>
-                            <label className="btn btn-outline-secondary" htmlFor="Indian&Itallian">Indian & Itallian</label>
+                            <input type="radio" className="btn-check" name="cuisine" id="Chinese" value="Chinese" 
+                            autoComplete="off" defaultChecked={this.state.cuisine === "Chinese"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="Chinese">Chinese</label>
 
-                            <input type="radio" className="btn-check" name="cuisine" id="Chinese&Continential" value="Chinese & Continential" 
-                            autoComplete="off" defaultChecked={this.state.cuisine === "Chinese & Continential"} onChange={(e)=>{this.change(e)}}/>
-                            <label className="btn btn-outline-secondary" htmlFor="Chinese&Continential">Chinese & Continential</label>
+                            <input type="radio" className="btn-check" name="cuisine" id="Indian&Continential" value="Indian & Continental" 
+                            autoComplete="off" defaultChecked={this.state.cuisine === "Indian & Continential"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="Indian&Continential">Indian & Continential</label>
 
-                            <input type="radio" className="btn-check" name="cuisine" id="LiveBarbeque" value="Live barbeque" 
-                            autoComplete="off" defaultChecked={this.state.cuisine === "Live barbeque"} onChange={(e)=>{this.change(e)}}/>
-                            <label className="btn btn-outline-secondary" htmlFor="LiveBarbeque">Live barbeque</label>
+                            <input type="radio" className="btn-check" name="cuisine" id="Indian" value="Indian" 
+                            autoComplete="off" defaultChecked={this.state.cuisine === "Indian"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="Indian">Indian</label>
 
-                            <input type="radio" className="btn-check" name="cuisine" id="SouthIndian" value="South indian" 
-                            autoComplete="off" defaultChecked={this.state.cuisine === "South indian"} onChange={(e)=>{this.change(e)}}/>
-                            <label className="btn btn-outline-secondary" htmlFor="SouthIndian">South indian</label>
+                            <input type="radio" className="btn-check" name="cuisine" id="PanAsia" value="Pan Asia" 
+                            autoComplete="off" defaultChecked={this.state.cuisine === "Pan Asia"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="PanAsia">Pan Asia</label>
 
-                            <input type="radio" className="btn-check" name="cuisine" id="VratSpecial" value="Vrat special" 
-                            autoComplete="off" defaultChecked={this.state.cuisine === "Vrat special"} onChange={(e)=>{this.change(e)}}/>
-                            <label className="btn btn-outline-secondary" htmlFor="VratSpecial">Vrat special</label>
+                            <input type="radio" className="btn-check" name="cuisine" id="Bengali" value="Bengali" 
+                            autoComplete="off" defaultChecked={this.state.cuisine === "Bengali"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="Bengali">Bengali</label>
 
                             <br/>
                             <hr/>
                             <div>Select Preference</div>
-                            <input type="radio" className="btn-check" name="preference" id="veg" value="Veg" 
-                            autoComplete="off" defaultChecked={this.state.preference === "Veg"} onChange={(e)=>{this.change(e)}}/>
+                            <input type="radio" className="btn-check" name="preference" id="veg" value="veg" 
+                            autoComplete="off" defaultChecked={this.state.preference === "veg"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="veg">Veg</label>
 
-                            <input type="radio" className="btn-check" name="preference" id="NonVeg" value="Non veg" 
-                            autoComplete="off" defaultChecked={this.state.preference === "Non veg"} onChange={(e)=>{this.change(e)}}/>
+                            <input type="radio" className="btn-check" name="preference" id="NonVeg" value="non_veg" 
+                            autoComplete="off" defaultChecked={this.state.preference === "non_veg"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="NonVeg">Non veg</label>
 
-                            <input type="radio" className="btn-check" name="preference" id="veg&Nonveg" value="veg & Nonveg" 
-                            autoComplete="off" defaultChecked={this.state.preference === "veg & Nonveg"} onChange={(e)=>{this.change(e)}}/>
+                            <input type="radio" className="btn-check" name="preference" id="veg&Nonveg" value="veg & non_veg" 
+                            autoComplete="off" defaultChecked={this.state.preference === "veg & non_veg"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="veg&Nonveg">veg & Nonveg</label>
                             <br/>
                             <hr/>
 
                             <div>Select Meal Type</div>
-                            <input type="radio" className="btn-check" name="mealtype" id="AppetizerOnly" value="Appetizer only" 
-                            autoComplete="off" defaultChecked={this.state.mealtype === "Appetizer only"} onChange={(e)=>{this.change(e)}}/>
+                            <input type="radio" className="btn-check" name="mealtype" id="AppetizerOnly" value="Starter" 
+                            autoComplete="off" defaultChecked={this.state.mealtype === "Starter"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="AppetizerOnly">Appetizer only</label>
 
                             <input type="radio" className="btn-check" name="mealtype" id="MainCourse" value="Main course" 
                             autoComplete="off" defaultChecked={this.state.mealtype === "Main course"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="MainCourse">Main course</label>
 
-                            <input type="radio" className="btn-check" name="mealtype" id="Appetizers&MainCourse" value="Appetizers & MainCourse" 
-                            autoComplete="off" defaultChecked={this.state.mealtype === "Appetizers & MainCourse"} onChange={(e)=>{this.change(e)}}/>
+                            <input type="radio" className="btn-check" name="mealtype" id="Appetizers&MainCourse" value="Starter & MainCourse" 
+                            autoComplete="off" defaultChecked={this.state.mealtype === "Starter & MainCourse"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="Appetizers&MainCourse">Appetizers & Main Course</label>
                         </Modal.Body>
 
@@ -573,7 +909,7 @@ componentDidMount(){
         <option value="field3">Field 3</option>
       </Form.Control>
     </Form.Group> */}
-                            {this.state.mealtype === "Appetizer only" &&
+                            {this.state.mealtype === "Starter" &&
                             <div>
                                 
                                 <div>Select Appetizer</div>
@@ -598,7 +934,7 @@ componentDidMount(){
                                 />
                             </div>}
 
-                            {this.state.mealtype === "Appetizers & MainCourse" &&
+                            {this.state.mealtype === "Starter & MainCourse" &&
                             <div>
                                 <div>Select Appetizer</div>
                                 <MultiSelectReact 
@@ -611,7 +947,7 @@ componentDidMount(){
                             </div>
                             }
 
-                            {this.state.mealtype === "Appetizers & MainCourse" && <div>
+                            {this.state.mealtype === "Starter & MainCourse" && <div>
                                 <br/>
                                 <hr/>
                                 <div>Select Main Course</div>
@@ -726,6 +1062,9 @@ componentDidMount(){
                                 <hr/>
 
                                 <div>
+                                    City : {this.state.city}
+                                </div>
+                                <div>
                                     Number of people : {this.state.people}
                                 </div>
 
@@ -741,103 +1080,111 @@ componentDidMount(){
                                 <div>
                                     Meal Type : {this.state.mealtype}
                                 </div>
+                                <div>
+                                    Meal c price : {this.state.totalMainCoursePrice}
+                                </div>
 
                                 <hr/>
 
-                                {this.state.appetizer.some(el => el.value === true) &&
+                                {this.state.boolean && this.state.appetizer.some(el => el.value === true) &&
                                 <div> Appetizer Details : 
                                     <table>
                                                 <tr>
                                                     <th>Name</th>
-                                                    <th>Price</th>
+                                                    {/* <th>Price</th> */}
                                                 </tr>
                                         {this.state.appetizer.map((item,index)=>{
                                     
                                         return item.value === true &&  (
                                                 <tr key={index}>
                                                     <td>{item.name}</td>
-                                                    <td className="price_td">{item.price}</td>
+                                                    {/* <td className="price_td">{item.price}</td> */}
                                                 </tr>
                                         )
                                         })}
-                                        <tr>
+                                        {/* <tr>
                                             <td>
                                                 Total
                                             </td>
                                             <td className="price_td">
-                                                {appetizerPrice}
+                                                {this.state.totalAppeticerPrice}
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                     </table>
+                                    Your total Appetizer price is : Rs. {this.state.totalAppeticerPrice}
                                 </div>}
 
                                 <br/>
 
-                                {this.state.mainCourse.some(el => el.value === true) &&
+                                {this.state.boolean && this.state.mainCourse.some(el => el.value === true) &&
                                 <div> Main Course Details : 
                                     <table>
                                                 <tr>
                                                     <th>Name</th>
-                                                    <th>Price</th>
+                                                    {/* <th>Price</th> */}
                                                 </tr>
                                         {this.state.mainCourse.map((item,index)=>{
                                     
                                         return item.value === true &&  (
                                                 <tr key={index}>
                                                     <td>{item.name}</td>
-                                                    <td className="price_td">{item.price}</td>
+                                                    {/* <td className="price_td">{item.price}</td> */}
                                                 </tr>
                                         )
                                         })}
-                                        <tr>
+                                        {/* <tr>
                                             <td>
                                                 Total
                                             </td>
                                             <td className="price_td">
-                                                {mainCoursePrice}
+                                                {this.state.totalMainCoursePrice}
                                             </td>
-                                        </tr>
+                                        </tr> */}
                                     </table>
+                                    Your total Main Course price is : Rs. {this.state.totalMainCoursePrice}
                                 </div>}
 
                                 <br/>
-                                {this.state.dessert.some(el => el.value === true) &&
+                                {this.state.boolean && this.state.dessert.some(el => el.value === true) &&
                                 <div> Desserts Details : 
                                     <table>
                                                 <tr>
                                                     <th>Name</th>
-                                                    <th>Price</th>
+                                                    {/* <th>Price</th> */}
                                                 </tr>
                                         {this.state.dessert.map((item,index)=>{
                                     
                                         return item.value === true &&  (
                                                 <tr key={index}>
                                                     <td>{item.name}</td>
-                                                    <td className="price_td">{item.price}</td>
+                                                    {/* <td className="price_td">{item.price}</td> */}
                                                 </tr>
                                         )
                                         })}
                                         <tr>
-                                            <td>
+                                            {/* <td>
                                                 Total
                                             </td>
                                             <td className="price_td">
-                                                {dessertPrice}
-                                            </td>
+                                                {this.state.totalDessertPrice}
+                                            </td> */}
+
                                         </tr>
                                     </table>
+                                            Your total dessert price is : {this.state.totalDessertPrice}
                                 </div>}
                             </div>
+                            <hr/>
                             
                             <div>
-                                Grand total = ( Appetizer Total + Main Course Total + Dessert Total ) * ( Number of people )
+                                Grand total = ( Appetizer Total + Main Course Total + Dessert Total ) + 5% GST
                             </div>
                             <div>
-                                = ({appetizerPrice}+{mainCoursePrice}+{dessertPrice}) * ({this.state.people})
+                                = ({this.state.totalAppeticerPrice}+{this.state.totalMainCoursePrice}+{this.state.totalDessertPrice}) + {(this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice)*5/100}
                             </div>
                             <div>
                                 <strong>
-                                = {(appetizerPrice+mainCoursePrice+dessertPrice) * (this.state.people)} Rupees only
+                                = {this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice  + (((this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice)*5)/100)} Rupees only
                                 </strong>
                             </div>
                             
@@ -849,6 +1196,9 @@ componentDidMount(){
                             {/* <div >
                                 Total amount you have to pay : {(appetizerPrice+mainCoursePrice+dessertPrice) * (this.state.people)}
                             </div> */}
+                            <Button variant="primary" onClick={this.prevfourtothree}>
+                                previous
+                            </Button>
                             <Button variant="info" onClick={()=>{alert("Redirect to payment page")}}>
                                 Proceed for payment
                             </Button>

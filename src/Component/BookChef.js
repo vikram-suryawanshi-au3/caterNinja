@@ -21,15 +21,22 @@ export default class BookChef extends Component {
             isOpen2: false,
             isOpen3: false,
             isOpen4: false,
+            isOpen5: false,
             appetizer:[],
             boolean:true,
             data:[newdata.Sheet1],
             mainCourse:[],
             date:'',
             dessert:[],
+            breadRice:[],
+            mobileno:"",
+            email:"",
+            dessertClassname:"caterNinja_add_dessert_button", 
+            showDessert:false,
             totalMainCoursePrice:0,
             totalAppeticerPrice:0,
-            totalDessertPrice:0
+            totalDessertPrice:0,
+            totalBreadRicePrice:0
           }
 
     //       optionClicked(optionsList) {
@@ -102,6 +109,7 @@ componentDidMount(){
             isOpen2: false,
             isOpen3: false,
             isOpen4: false,
+            isOpen5: false,
             appetizer:[],
             boolean:true,
             data:[newdata.Sheet1],
@@ -169,6 +177,9 @@ componentDidMount(){
                             this.setState({
                                 isOpen2: false,
                                 isOpen3: true,
+                                breadRice:this.state.data.filter(element => {
+                                    return (element.mealsubtype === "Rice" || element.mealsubtype === "Breads")
+                                }),
                             })
 
                             
@@ -287,7 +298,7 @@ componentDidMount(){
                                     if(this.state.cuisine === "Indian & Chinese"){
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -297,7 +308,7 @@ componentDidMount(){
                                     }else if(this.state.cuisine === "Indian & Continental"){
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -307,7 +318,7 @@ componentDidMount(){
                                     }else{
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine) && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -321,7 +332,7 @@ componentDidMount(){
                                     if(this.state.cuisine === "Indian & Chinese"){
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -331,7 +342,7 @@ componentDidMount(){
                                     }else if(this.state.cuisine === "Indian & Continental"){
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -341,7 +352,7 @@ componentDidMount(){
                                     }else{
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine) && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -355,7 +366,7 @@ componentDidMount(){
                                     if(this.state.cuisine === "Indian & Chinese"){
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -365,7 +376,7 @@ componentDidMount(){
                                     }else if(this.state.cuisine === "Indian & Continental"){
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -375,7 +386,7 @@ componentDidMount(){
                                     }else{
                                         this.setState({
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine) && element.mealtype === "Main course" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             }),
                                             dessert:this.state.data.filter(element => {
                                                 return element.mealsubtype === "Dessert"
@@ -407,7 +418,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }else if(this.state.cuisine === "Indian & Continental"){
@@ -419,7 +430,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }else{
@@ -431,7 +442,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine) && element.mealtype === "Main course" && element.preference === "veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }
@@ -447,7 +458,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }else if(this.state.cuisine === "Indian & Continental"){
@@ -459,7 +470,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }else{
@@ -471,7 +482,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine) && element.mealtype === "Main course" && element.preference === "non_veg" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }
@@ -488,7 +499,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Chinese") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }else if(this.state.cuisine === "Indian & Continental"){
@@ -501,7 +512,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian" || element.cuisine === "Continental") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }else{
@@ -514,7 +525,7 @@ componentDidMount(){
                                                 return element.mealsubtype === "Dessert"
                                             }),
                                             mainCourse:this.state.data.filter(element => {
-                                                return (element.cuisine === this.state.cuisine || element.cuisine === "Indian") && element.mealtype === "Main course" && element.mealsubtype !== "Dessert"
+                                                return (element.cuisine === this.state.cuisine) && element.mealtype === "Main course" && element.mealsubtype !== "Dessert" && element.mealsubtype !== "Rice" && element.mealsubtype !== "Breads"
                                             })
                                         })
                                     }
@@ -543,6 +554,10 @@ componentDidMount(){
             return item.value === true
         })
 
+        const breadRicePriceArr = this.state.breadRice.filter(item=>{
+            return item.value === true
+        })
+
         console.log("app")
         console.log(appetizerPriceArr)
         console.log("main")
@@ -551,6 +566,19 @@ componentDidMount(){
         console.log(dessertPriceArr)
 
         let mainCoursePrice = mainCoursePriceArr.reduce((acc, item) => {
+            if(item.quantity === "kg") {
+                    if(mainCoursePriceArr.length === 1){
+                        return acc + (item.price * peoples * 0.150)
+                    }
+                    return acc + (item.price * peoples * 0.100)
+            }
+                if(item.name === "Pooris"){
+                    return acc + ((item.price)/12 * peoples * 3 )
+                }
+                return acc + ((item.price)/12 * peoples * 2)
+        }, 0)
+
+        let breadRicePrice = breadRicePriceArr.reduce((acc, item) => {
             if(item.quantity === "kg") {
                     if(mainCoursePriceArr.length === 1){
                         return acc + (item.price * peoples * 0.150)
@@ -588,7 +616,8 @@ componentDidMount(){
         this.setState({
             totalMainCoursePrice : Math.round(mainCoursePrice),
             totalAppeticerPrice : Math.round(appetizerPrice),
-            totalDessertPrice : Math.round(dessertPricee)
+            totalDessertPrice : Math.round(dessertPricee),
+            totalBreadRicePrice : Math.round(breadRicePrice),
         }) 
 
 
@@ -602,6 +631,20 @@ componentDidMount(){
                             });
                             this.calculate()
                         }
+
+    nextfourtofive = () => {
+        if(!this.state.email){
+            alert("please enter email address")
+        }else if(!this.state.mobileno){
+            alert("please enter mobile number")
+        }else{
+            this.setState({
+                isOpen4: false,
+                isOpen5: true,
+                boolean:true,
+            });
+        }
+                        }
     prevtwotoone = () => this.setState({ 
                                 isOpen1: true,
                                 isOpen2: false,
@@ -614,10 +657,15 @@ componentDidMount(){
                                 appetizer:[],
                                 mainCourse:[]
                             });
-                            prevfourtothree = () => this.setState({ 
+    prevfourtothree = () => this.setState({ 
                                 isOpen3: true,
                                 isOpen4: false,
                             });
+    prevfivetofour = () => this.setState({ 
+                                isOpen4: true,
+                                isOpen5: false,
+                            });
+    
     occasion = (e) => this.setState({
         occasion:e.target.value
     })
@@ -648,6 +696,14 @@ componentDidMount(){
     }
     selectedBadgeClicked3(optionsList) {
         this.setState({ dessert: optionsList });
+        // console.log(optionsList)
+    }
+    optionClicked4(optionsList) {
+        this.setState({ breadRice: optionsList });
+        // console.log(optionsList)
+    }
+    selectedBadgeClicked4(optionsList) {
+        this.setState({ breadRice: optionsList });
         // console.log(optionsList)
     }
 
@@ -757,13 +813,13 @@ componentDidMount(){
 
                             <br/>
                             <hr/>
-                            <div>Number of people (above 5 years of age)</div>
+                            <div>Number of people (above 7 years of age)</div>
                             <select className="form-select" aria-label="Default select example" name="people" value={this.state.people} onChange={(e)=>{this.change(e)}}>
                                 <option defaultValue>select people</option>
-                                <option value="1">1</option>
+                                {/* <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
-                                <option value="4">4</option>
+                                <option value="4">4</option> */}
                                 <option value="5">5</option>
                                 <option value="6">6</option>
                                 <option value="7">7</option>
@@ -828,6 +884,10 @@ componentDidMount(){
 
                         <Modal.Body>
                             <div>Select Cuisine</div>
+                            <input type="radio" className="btn-check" name="cuisine" id="Indian" value="Indian" 
+                            autoComplete="off" defaultChecked={this.state.cuisine === "Indian"} onChange={(e)=>{this.change(e)}}/>
+                            <label className="btn btn-outline-secondary" htmlFor="Indian">North Indian</label>
+
                             <input type="radio" className="btn-check" name="cuisine" id="Indian&Chinese" value="Indian & Chinese" 
                             autoComplete="off" defaultChecked={this.state.cuisine === "Indian & Chinese"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="Indian&Chinese">Indian & Chinese</label>
@@ -840,12 +900,9 @@ componentDidMount(){
                             autoComplete="off" defaultChecked={this.state.cuisine === "Indian & Continential"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="Indian&Continential">Indian & Continential</label>
 
-                            <input type="radio" className="btn-check" name="cuisine" id="Indian" value="Indian" 
-                            autoComplete="off" defaultChecked={this.state.cuisine === "Indian"} onChange={(e)=>{this.change(e)}}/>
-                            <label className="btn btn-outline-secondary" htmlFor="Indian">Indian</label>
 
-                            <input type="radio" className="btn-check" name="cuisine" id="PanAsia" value="Pan Asia" 
-                            autoComplete="off" defaultChecked={this.state.cuisine === "Pan Asia"} onChange={(e)=>{this.change(e)}}/>
+                            <input type="radio" className="btn-check" name="cuisine" id="PanAsia" value="Pan Asian" 
+                            autoComplete="off" defaultChecked={this.state.cuisine === "Pan Asian"} onChange={(e)=>{this.change(e)}}/>
                             <label className="btn btn-outline-secondary" htmlFor="PanAsia">Pan Asia</label>
 
                             <input type="radio" className="btn-check" name="cuisine" id="Bengali" value="Bengali" 
@@ -893,6 +950,9 @@ componentDidMount(){
                         </Modal.Footer>
                     </Modal>
 
+                            
+
+
                     <Modal show={this.state.isOpen3} onHide={this.closeModal} animation={false} 
                     backdrop="static" dialogClassName="modal-60w">
                         <Modal.Header closeButton>
@@ -909,6 +969,10 @@ componentDidMount(){
         <option value="field3">Field 3</option>
       </Form.Control>
     </Form.Group> */}
+
+                            <div className={this.state.dessertClassname} onClick={()=>{this.setState({dessertClassname:"caterNinja_add_dessert_button caterNinja_add_dessert_button_hide", showDessert:true})}}>
+                                Add Dessert +
+                            </div>
                             {this.state.mealtype === "Starter" &&
                             <div>
                                 
@@ -963,15 +1027,30 @@ componentDidMount(){
 
                                 <br/>
                                 <hr/>
-                                <div>Add Desserts</div>
+                                <div>Add Breads and Rice</div>
+                                <MultiSelectReact 
+                                    options={this.state.breadRice}
+                                    optionClicked={this.optionClicked4.bind(this)}
+                                    selectedBadgeClicked={this.selectedBadgeClicked4.bind(this)}
+                                    selectedOptionsStyles={selectedOptionsStyles}
+                                    optionsListStyles={optionsListStyles}
+                                     
+                                />
+
+                                <br/>
+                                <hr/>
+                                {this.state.showDessert &&<div> 
+                                    <div>Add Desserts</div>
+                                
                                 <MultiSelectReact 
                                     options={this.state.dessert}
                                     optionClicked={this.optionClicked3.bind(this)}
                                     selectedBadgeClicked={this.selectedBadgeClicked3.bind(this)}
                                     selectedOptionsStyles={selectedOptionsStyles}
-                                    optionsListStyles={optionsListStyles}
-                                     
+                                    optionsListStyles={optionsListStyles}  
                                 />
+                                </div>
+                                }
 
 
 
@@ -1046,6 +1125,37 @@ componentDidMount(){
                     </Modal>
 
                     <Modal show={this.state.isOpen4} onHide={this.closeModal} animation={false} 
+                    backdrop="static" dialogClassName="modal-60w">
+                        <Modal.Header closeButton>
+                            <Modal.Title>Share your details</Modal.Title>
+                        </Modal.Header>
+
+                        <Modal.Body>
+                            <div>
+                                <div>Your email address :</div>
+                                <div >
+                                    <input style={{width:"60%"}} value={this.state.email} placeholder="enter your email address" name="email" onChange={(e)=>{this.change(e)}}></input>
+                                </div>
+                            </div>
+                            <br/>
+                            <div>
+                                <div>Your mobile number :</div>
+                                <div>
+                                    <input style={{width:"60%"}} value={this.state.mobileno} type="number" placeholder="enter your mobile number" name="mobileno" onChange={(e)=>{this.change(e)}}></input>
+                                </div>
+                            </div>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="primary" onClick={this.prevfourtothree}>
+                                previous
+                            </Button>
+                            <Button variant="primary" onClick={this.nextfourtofive}>
+                                next
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+
+                    <Modal show={this.state.isOpen5} onHide={this.closeModal} animation={false} 
                     backdrop="static" dialogClassName="modal-60w">
                         <Modal.Header closeButton>
                             <Modal.Title>Bill</Modal.Title>
@@ -1173,18 +1283,48 @@ componentDidMount(){
                                     </table>
                                             Your total dessert price is : {this.state.totalDessertPrice}
                                 </div>}
+
+                                <br/>
+                                {this.state.boolean && this.state.breadRice.some(el => el.value === true) &&
+                                <div> Bread & Rice Details : 
+                                    <table>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    {/* <th>Price</th> */}
+                                                </tr>
+                                        {this.state.breadRice.map((item,index)=>{
+                                    
+                                        return item.value === true &&  (
+                                                <tr key={index}>
+                                                    <td>{item.name}</td>
+                                                    {/* <td className="price_td">{item.price}</td> */}
+                                                </tr>
+                                        )
+                                        })}
+                                        <tr>
+                                            {/* <td>
+                                                Total
+                                            </td>
+                                            <td className="price_td">
+                                                {this.state.totalDessertPrice}
+                                            </td> */}
+
+                                        </tr>
+                                    </table>
+                                            Your total dessert price is : {this.state.totalBreadRicePrice}
+                                </div>}
                             </div>
                             <hr/>
                             
                             <div>
-                                Grand total = ( Appetizer Total + Main Course Total + Dessert Total ) + 5% GST
+                                Grand total = ( Appetizer Total + Main Course Total + Dessert Total + Bread & Rice Total ) + 5% GST
                             </div>
                             <div>
-                                = ({this.state.totalAppeticerPrice}+{this.state.totalMainCoursePrice}+{this.state.totalDessertPrice}) + {(this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice)*5/100}
+                                = ({this.state.totalAppeticerPrice}+{this.state.totalMainCoursePrice}+{this.state.totalDessertPrice}+{this.state.totalBreadRicePrice}) + {(this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice + this.state.totalBreadRicePrice)*5/100}
                             </div>
                             <div>
                                 <strong>
-                                = {this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice  + (((this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice)*5)/100)} Rupees only
+                                = {this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice + this.state.totalBreadRicePrice  + (((this.state.totalAppeticerPrice + this.state.totalMainCoursePrice + this.state.totalDessertPrice + this.state.totalBreadRicePrice)*5)/100)} Rupees only
                                 </strong>
                             </div>
                             
@@ -1196,7 +1336,7 @@ componentDidMount(){
                             {/* <div >
                                 Total amount you have to pay : {(appetizerPrice+mainCoursePrice+dessertPrice) * (this.state.people)}
                             </div> */}
-                            <Button variant="primary" onClick={this.prevfourtothree}>
+                            <Button variant="primary" onClick={this.prevfivetofour}>
                                 previous
                             </Button>
                             <Button variant="info" onClick={()=>{alert("Redirect to payment page")}}>
